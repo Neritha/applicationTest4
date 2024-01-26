@@ -6,4 +6,14 @@
 
 <h1>Presentation du projet / page initiale</h1>
 
+{% if app.user != null %}
+    <a href="{{path('app_logout')}}"><button type="button" class="btn btn-outline-info">Se déconnecter</button></a>
+    
+
+{% else %}
+    <a href="{{path('app_login')}}"><button type="button" class="btn btn-outline-info">Se connecter</button></a>  
+    <a href="{{path('app_register')}}"><button type="button" class="btn btn-outline-info">S'inscrire</button></a>
+                    
+{% endif %}
+
 {% endblock %}
