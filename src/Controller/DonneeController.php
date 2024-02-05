@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Donnee;
 use App\Repository\DonneeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,4 +22,14 @@ class DonneeController extends AbstractController
             "lesDonnees" => $donnees
         ]);
     }
+    
+    // /**
+    //  *@Route('/supprimerDonne/{id}', name: 'supprimerDonne', methods: ['GET'])]
+    //  */
+    // public function supprimerDonne (Donnee $donnee, EntityManagerInterface $manager) //:Response
+    // {
+    //     $manager->remove($donnee);
+    //     $manager->flush();
+    // }
+
 }

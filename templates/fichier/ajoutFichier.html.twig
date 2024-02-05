@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AccueilController!{% endblock %}
+
+{% block body %}
+
+<h1>Ajouter un fichier</h1>
+    <div>
+        {{form(form)}}
+    </div>
+
+    <p>Liste des fichiers</p>
+        <table class="table caption-top table-hover">
+            
+            <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Extension</th>
+                    <th scope="col">Taille</th>
+                    <th class="col-6">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for f in app.user.fichiers %}
+
+                    <tr>
+                        <td>{{f.nomOriginal}}</td>
+                        <td>{{f.dateEnvoi | date("d-m-Y à H:i:s") }}</td>
+                        <td>{{f.extension}}</td>
+
+                        {% set ko = f.taille / 1000 %}
+                        <td>{{ko}}ko</td>
+
+                        <td>
+                            <a href="{{path('fichierContenu', {'id': f.id})}}" class="btn btn-primary">afficher le contenu</a>
+
+                            <a href="{{path('fichierSupr', {'id': f.id})}}" class="btn btn-warning text-secondary">Supprimer le fichier</a>
+
+                            <a href="{{path('ajoutDonnee', {'id': f.id})}}" 
+                            
+                            class="btn btn-success . 
+ 
+                            {% if f.premiereDonnee %}
+                                disabled
+                            {% endif %} "
+
+                            >Ajouter à la base</a>
+                        </td>
+{# 
+{{ dump(f.premiereDonnee) }} #}
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+{% endblock %}

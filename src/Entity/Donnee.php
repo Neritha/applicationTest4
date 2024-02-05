@@ -25,47 +25,52 @@ class Donnee
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $t;
+    private $t; // temperature
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $h;
+    private $h; // humidite
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $v;
+    private $v; //volume
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $tds;
+    private $tds; // tds ()
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $ph;
+    private $ph; // ph
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $pgf;
+    private $pgf; //pgf (Pression du gaz frigorigène)
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $pr;
+    private $pr; // pr Pourcentage de remplissage du réservoir (d’eau par rapport à la capacité maximale)
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $vfe;
+    private $vfe; // vfe (Valeur binaire concernant l’alerte sur une éventuelle fuite d’eau)
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $vnc;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $puissance; //vnc ( Valeur binaire concernant l’alerte sur le niveau critique d’eau)
 
     public function getId(): ?int
     {
@@ -188,6 +193,18 @@ class Donnee
     public function setVnc(?int $vnc): self
     {
         $this->vnc = $vnc;
+
+        return $this;
+    }
+
+    public function getPuissance(): ?float
+    {
+        return $this->puissance;
+    }
+
+    public function setPuissance(?float $puissance): self
+    {
+        $this->puissance = $puissance;
 
         return $this;
     }

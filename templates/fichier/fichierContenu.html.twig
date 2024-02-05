@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contenu du fichier{% endblock %}
+
+{% block body %}
+    <h1 class="pt-3 text-center">Contenu du fichier</h1>
+
+    <a href=" {{path('ajoutFichier')}} " class="btn btn-success">revenir en arrière</a>
+
+    <p>Nom du fichier : {{leFichier.nomOriginal}} </p>
+
+
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                {% for header in csvContents[0] %}
+                    <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+
+             {% for row in csvContents|slice(1) %}
+                <tr>
+                    {% for column in row %}
+                        <td>{{ column }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %} 
+
+        </tbody>
+    </table>
+    {# {{ dump(csvContents) }} #}
+{% endblock %}

@@ -30,7 +30,7 @@
                         <a class="nav-link" href=" {{path('tableauDeBord')}} ">Tableau de Bord</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Ajouter des Données</a>
+                        <a class="nav-link" href=" {{path('ajoutFichier')}} ">Ajouter des Données</a>
                     </li>
 
                     {% if is_granted('ROLE_ADMIN') %}
@@ -53,8 +53,7 @@
         </div>
     </nav>
 
-        <div class="container text-center">  
-        {#Affiche tout les messages flash#}
+        <div class="container text-center">  {#pour afficher les messages flash#}
         {% for label, messages in app.flashes %}
             <div class="alert alert-{{label}} mt-3">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
