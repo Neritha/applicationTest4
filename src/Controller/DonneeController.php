@@ -23,13 +23,19 @@ class DonneeController extends AbstractController
         ]);
     }
     
-    // /**
-    //  *@Route('/supprimerDonne/{id}', name: 'supprimerDonne', methods: ['GET'])]
-    //  */
-    // public function supprimerDonne (Donnee $donnee, EntityManagerInterface $manager) //:Response
-    // {
-    //     $manager->remove($donnee);
-    //     $manager->flush();
-    // }
+
+    /**
+     * @Route("/deleteDonnee/{id}", name="deleteDonnee", methods={"GET"})
+     */
+    public function deleteDonnee(Donnee $donnee, EntityManagerInterface $entityManager): Response
+    {
+        
+        $entityManager->remove($donnee);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('tableauDeBord');
+    }
+
+
 
 }

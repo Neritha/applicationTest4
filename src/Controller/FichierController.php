@@ -82,47 +82,62 @@ class FichierController extends AbstractController
      */
     public function suprFichier(Fichier $fichier, EntityManagerInterface $manager): Response
     {
-        // on commence par supprimer les donné dans la base si il y en a 
-        // ensuite on suprimer le fichier dans l'application
+        $idDonneeSupr=null ;
 
-        if ($fichier->getPremiereDonnee()){ // si il y a une première donnée, donc dans la base
-            // fonction pour supprmier les données correspondante dans la base
-            // boucle des ids de la première ligne à la derière du fichier
+        if ($fichier->getPremiereDonnee()){ 
 
-            //tableau des id des données à supprimer
-            $idDonneeSupr = [];
-
-            for ($i = $fichier->getPremiereDonnee(); $i <= $fichier->getPremiereDonnee()+ $fichier->getNbLigne(); $i++){
+            for ($i = $fichier->getPremiereDonnee()->getId(); $i <= $fichier->getPremiereDonnee()->getId()+ $fichier->getNbLigne()-2; $i++){
                 $idDonneeSupr[] = $i;
             }
-
-            /*
-            foreach ($idDonneeSupr as $valueId){
-                //supprimerDonnee();
-                $this->supprimerDonnee($valueId);
-            } 
-            */
         }
-
-
         $fileDirectory = $this->getParameter('file_directory');
-        $filePath = $fileDirectory . '/' . $fichier->getNomServeur();
+                $filePath = $fileDirectory . '/' . $fichier->getNomServeur();
 
-        if (file_exists($filePath)) {
-            unlink($filePath); // supprime physiquement le fichier
+                if (file_exists($filePath)) {
+                    unlink($filePath); // supprime physiquement le fichier
+                }
+
+                $manager->remove($fichier);
+
+        if ($idDonneeSupr != null){
+
+            foreach ($idDonneeSupr as $valueId){
+
+                $donnee = $this->getDoctrine()->getRepository(Donnee::class)->find($valueId);
+
+                $this->deleteDonnees($donnee, $manager);
+
+             } 
         }
 
-        $manager->remove($fichier);
+        
         $manager->flush();
-
-        // faire appelle à une fonction qui supprime les données dans la base
 
         $this->addFlash("success", "Le fichier a bien été supprimé!");
 
         return $this->redirectToRoute('ajoutFichier');
 
+    } 
 
-    } // à voir pour metre sur la même page : ajoutFichier 
+    public function deleteDonnees(Donnee $donnee, EntityManagerInterface $entityManager): void
+    {
+        // foreach ($ids as $id) {
+        //     $donnee = $this->getDoctrine()->getRepository(Donnee::class)->find($id);
+
+        //     if ($donnee) {
+        //         $this->getDoctrine()->getManager()->remove($donnee);
+        //     }
+        // }
+
+        // $this->getDoctrine()->getManager()->flush();
+
+        // foreach($ids as $valueId){
+        //     $this->forward('App\Controller\YourController::deleteDonnee', ['id' => $valueId]);
+        // }
+        $entityManager->remove($donnee);
+        $entityManager->flush();
+        
+    }
 
 
     // /**
@@ -219,4 +234,3 @@ class FichierController extends AbstractController
     }
 }
     
-
