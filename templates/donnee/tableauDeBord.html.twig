@@ -6,15 +6,63 @@
 
     <h1>Tableau de Bord</h1>
 
-    <p class="lead text-success">D'incroyables graphiques prochainement sur vos écrants !</p>
-
+    {# <p class="lead text-success">D'incroyables graphiques prochainement sur vos écrants !</p> #}
     <p>Selection des données : </p>
 
-    <h3>Liste</h3>
+    {{form(form)}}
+    
 
-    {# <a href="{{path('deleteDonnee', {'id':44})}}" class="btn btn-primary">supprimer une donnée</a> #}
 
-    <a href="{{ path('deleteDonnee', {'id': 47}) }}" class="btn btn-danger">Supprimer une donnée</a>
+    {% if listeDonnee is not empty %}
+    
+    <div class="row">
+    <div class="col-6">
+
+    <h2>Liste des données</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col-2">Temps</th>
+                <th scope="col-1">temperature</th>
+                <th scope="col-1">humidite</th>
+                <th scope="col-1">volume</th>
+                <th scope="col-1">puissance</th>
+                <th scope="col-1">tds</th>
+                <th scope="col-1">ph</th>
+                <th scope="col-1">pfg</th>
+                <th scope="col-1">pr</th>
+                <th scope="col-1">vfe</th>
+                <th scope="col-1">vnc</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        {% for laDonnee in listeDonnee %}
+            <tr>
+                <td> {{laDonnee.temps}} </td>
+                <td> {{laDonnee.t}} </td>
+                <td> {{laDonnee.h}} </td>
+                <td> {{laDonnee.v}} </td>
+                <td> {{laDonnee.puissance}} </td>
+                <td> {{laDonnee.tds}} </td>
+                <td> {{laDonnee.ph}} </td>
+                <td> {{laDonnee.pgf}} </td>
+                <td> {{laDonnee.pr}} </td>
+                <td> {{laDonnee.vfe}} </td>
+                <td> {{laDonnee.vnc}} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <div class="col-6">
+    Bonjour, bientot des graphiques ! 
+    </div>
+</div>
+
+    {% else %}
+        <p>Aucun fichier de données n'a été séléctionné pour le moment</p>
+    {% endif %}
 
 
 {% endblock %}
