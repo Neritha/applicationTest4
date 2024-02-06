@@ -9,9 +9,14 @@
     {# <p class="lead text-success">D'incroyables graphiques prochainement sur vos écrants !</p> #}
     <p>Selection des données : </p>
 
+
     {{form(form)}}
     
+    {# {{ form_start(form) }}
 
+    {{ form_row(form.fichier) }}
+
+    {{ form_end(form) }} #}
 
     {% if listeDonnee is not empty %}
     

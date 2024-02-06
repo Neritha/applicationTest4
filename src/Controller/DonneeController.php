@@ -28,7 +28,6 @@ class DonneeController extends AbstractController
         $dataAffiche = [];
         $donneesAffichees = [];
         
-
         if ($form->isSubmitted() && $form->isValid()) {
             $fichierSelect = $form->getData()['fichier'];
             $idFichier = $fichierSelect->getId();
