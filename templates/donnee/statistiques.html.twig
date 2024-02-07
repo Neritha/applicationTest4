@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques{% endblock %}
+
+{% block body %}
+<h1 class="m-3">Statistiques</h1>
+
+<a href=" {{path('tableauDeBord')}} " class="btn btn-success">revenir en arrière</a>
+
+ <p>Liste des données du fichier : {{fichier.nomOriginal}} </p>
+
+<table class="table table-bordered border">
+            <tbody>
+                <tr>
+                    <td rowspan="2">Moyennes</td>
+                    <td>temperatures</td>
+                    <td>
+
+                    {% set moy = 0 %}
+
+                    {% set lenTable = listeDonnee|length %}
+
+                    {% for data in listeDonnee %}
+                        {% set moy = moy+data.t %}
+                    {% endfor %}
+                    {% set moy = moy/lenTable %}  
+
+                    {# voir pour en faire une fonction, logique #}
+
+                    {{moy}}  
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>humidite</td>
+                    <td>
+                    
+                    {% set moy = 0 %}
+
+                    {% set lenTable = listeDonnee|length %}
+
+                    {% for data in listeDonnee %}
+                        {% set moy = moy+data.h %}
+                    {% endfor %}
+                    {% set moy = moy/lenTable %}  
+
+                    {# voir pour en faire une fonction, logique #}
+
+                    {{moy}}  
+
+                    
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+            
+
+
+{% endblock %}

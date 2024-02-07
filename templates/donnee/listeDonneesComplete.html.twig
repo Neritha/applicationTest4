@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau des données{% endblock %}
+
+{% block body %}
+<h1 class="m-3">Tableau des données</h1>
+
+
+
+<a href=" {{path('tableauDeBord')}} " class="btn btn-success">revenir en arrière</a>
+<p>Liste des données du fichier : {{fichier.nomOriginal}} </p>
+
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col-2">Temps</th>
+                        <th scope="col-1">temperature</th>
+                        <th scope="col-1">humidite</th>
+                        <th scope="col-1">volume</th>
+                        <th scope="col-1">puissance</th>
+                        <th scope="col-1">tds</th>
+                        <th scope="col-1">ph</th>
+                        <th scope="col-1">pfg</th>
+                        <th scope="col-1">pr</th>
+                        <th scope="col-1">vfe</th>
+                        <th scope="col-1">vnc</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                {% for laDonnee in listeDonnee %}
+                    <tr>
+                        <td> {{laDonnee.temps}} </td>
+                        <td> {{laDonnee.t}} </td>
+                        <td> {{laDonnee.h}} </td>
+                        <td> {{laDonnee.v}} </td>
+                        <td> {{laDonnee.puissance}} </td>
+                        <td> {{laDonnee.tds}} </td>
+                        <td> {{laDonnee.ph}} </td>
+                        <td> {{laDonnee.pgf}} </td>
+                        <td> {{laDonnee.pr}} </td>
+                        <td> {{laDonnee.vfe}} </td>
+                        <td> {{laDonnee.vnc}} </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+
+{% endblock %}

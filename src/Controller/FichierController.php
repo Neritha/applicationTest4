@@ -22,6 +22,8 @@ class FichierController extends AbstractController
      */
     public function ajoutFichier(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $form = $this->createForm(AjoutFichierType::class);
         if($request->isMethod('POST')){
             $form->handleRequest($request);
@@ -82,6 +84,7 @@ class FichierController extends AbstractController
      */
     public function suprFichier(Fichier $fichier, EntityManagerInterface $manager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $idDonneeSupr=null ;
 
         if ($fichier->getPremiereDonnee()){ 
@@ -121,33 +124,12 @@ class FichierController extends AbstractController
 
     public function deleteDonnees(Donnee $donnee, EntityManagerInterface $entityManager): void
     {
-        // foreach ($ids as $id) {
-        //     $donnee = $this->getDoctrine()->getRepository(Donnee::class)->find($id);
-
-        //     if ($donnee) {
-        //         $this->getDoctrine()->getManager()->remove($donnee);
-        //     }
-        // }
-
-        // $this->getDoctrine()->getManager()->flush();
-
-        // foreach($ids as $valueId){
-        //     $this->forward('App\Controller\YourController::deleteDonnee', ['id' => $valueId]);
-        // }
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $entityManager->remove($donnee);
         $entityManager->flush();
         
     }
 
-
-    // /**
-    //  * @Route('/supprimerDonnee/{id}', name: 'supprimerDonnee', methods: ['GET'])
-    //  */
-    // public function supprimerDonnee(Donnee $donnee, EntityManagerInterface $manager)
-    // {
-    //     $manager->remove($donnee);
-    //     $manager->flush();
-    // }
 
     /**
      * @Route("/fichierContenu/{id}", name="fichierContenu", methods={"GET"})

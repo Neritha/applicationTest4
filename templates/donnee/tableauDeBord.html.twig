@@ -1,69 +1,260 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DonneeController!{% endblock %}
+{% block title %}Tableau de bord{% endblock %}
 
 {% block body %}
 
-    <h1>Tableau de Bord</h1>
+    <h1 class="m-3">Tableau de Bord</h1>
 
-    {# <p class="lead text-success">D'incroyables graphiques prochainement sur vos écrants !</p> #}
-    <p>Selection des données : </p>
-
-
-    {{form(form)}}
     
-    {# {{ form_start(form) }}
+    {{ form_start(form) }}
 
-    {{ form_row(form.fichier) }}
+    <div class="row">
+        <div class="col-4"><h3 class="m-2">Selection des données : </h3></div>
+        <div class="col-6">{{ form_row(form.fichier) }}</div>
+        <div class="col-2">{{ form_row(form.submit) }} </div>
+    
+    </div>
+    {{ form_end(form) }}
 
-    {{ form_end(form) }} #}
+    <hr>
 
     {% if listeDonnee is not empty %}
     
+    <h2>Tableau des données</h2>
     <div class="row">
-    <div class="col-6">
+        <div class="col-6">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col-2">Temps</th>
+                        <th scope="col-1">temperature</th>
+                        <th scope="col-1">humidite</th>
+                        <th scope="col-1">volume</th>
+                        <th scope="col-1">puissance</th>
+                        <th scope="col-1">tds</th>
+                        <th scope="col-1">ph</th>
+                        <th scope="col-1">pfg</th>
+                        <th scope="col-1">pr</th>
+                        <th scope="col-1">vfe</th>
+                        <th scope="col-1">vnc</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-    <h2>Liste des données</h2>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col-2">Temps</th>
-                <th scope="col-1">temperature</th>
-                <th scope="col-1">humidite</th>
-                <th scope="col-1">volume</th>
-                <th scope="col-1">puissance</th>
-                <th scope="col-1">tds</th>
-                <th scope="col-1">ph</th>
-                <th scope="col-1">pfg</th>
-                <th scope="col-1">pr</th>
-                <th scope="col-1">vfe</th>
-                <th scope="col-1">vnc</th>
-            </tr>
-        </thead>
-        <tbody>
+                {% for laDonnee in listeDonnee|slice(0, 10) %}
+                    <tr>
+                        <td> {{laDonnee.temps}} </td>
+                        <td> {{laDonnee.t}} </td>
+                        <td> {{laDonnee.h}} </td>
+                        <td> {{laDonnee.v}} </td>
+                        <td> {{laDonnee.puissance}} </td>
+                        <td> {{laDonnee.tds}} </td>
+                        <td> {{laDonnee.ph}} </td>
+                        <td> {{laDonnee.pgf}} </td>
+                        <td> {{laDonnee.pr}} </td>
+                        <td> {{laDonnee.vfe}} </td>
+                        <td> {{laDonnee.vnc}} </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-        {% for laDonnee in listeDonnee %}
-            <tr>
-                <td> {{laDonnee.temps}} </td>
-                <td> {{laDonnee.t}} </td>
-                <td> {{laDonnee.h}} </td>
-                <td> {{laDonnee.v}} </td>
-                <td> {{laDonnee.puissance}} </td>
-                <td> {{laDonnee.tds}} </td>
-                <td> {{laDonnee.ph}} </td>
-                <td> {{laDonnee.pgf}} </td>
-                <td> {{laDonnee.pr}} </td>
-                <td> {{laDonnee.vfe}} </td>
-                <td> {{laDonnee.vnc}} </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div class="col-6 d-flex justify-content-center align-items-center">
+            <a href=" {{path('listeDonneesComplete',{idF : idF})}} " class="btn btn-success">Afficher la liste complète</a>
+        </div>
     </div>
-    <div class="col-6">
-    Bonjour, bientot des graphiques ! 
+    <hr>
+    <h2>Graphiques</h2>
+    <div class="row">
+        <div class="col-3  d-flex justify-content-center align-items-center">
+            <a href=" {{path('graphiques',{idF : idF})}} " class="btn btn-success">Voir tous les graphiques</a>
+        </div>
+        <div class="col-9">
+
+            <div>
+                <canvas id="myChart"></canvas>
+            </div>
+
+        </div>
     </div>
-</div>
+
+    </div>
+    <hr>
+    <h2>Statistiques</h2>
+    <div class="row">
+
+        <div class="col-10">
+        
+        <table class="table table-bordered border">
+            <tbody>
+                <tr>
+                    <td rowspan="2">Moyennes</td>
+                    <td>temperatures</td>
+                    <td>
+
+                    {% set moy = 0 %}
+
+                    {% set lenTable = listeDonnee|length %}
+
+                    {% for data in listeDonnee %}
+                        {% set moy = moy+data.t %}
+                    {% endfor %}
+                    {% set moy = moy/lenTable %}  
+
+                    {# voir pour en faire une fonction, logique #}
+
+                    {{moy}}  
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>humidite</td>
+                    <td>
+                    
+                    {% set moy = 0 %}
+
+                    {% set lenTable = listeDonnee|length %}
+
+                    {% for data in listeDonnee %}
+                        {% set moy = moy+data.h %}
+                    {% endfor %}
+                    {% set moy = moy/lenTable %}  
+
+                    {# voir pour en faire une fonction, logique #}
+
+                    {{moy}}  
+
+                    
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+        <div class="col-2  d-flex justify-content-center align-items-center">
+            <a href="  {{path('statistiques',{idF : idF})}}" class="btn btn-success">Plus de statistiques</a>
+        </div>
+       
+        
+    </div>
+
+
+
+
+    {# graphiques #}
+
+     <script>
+
+    let maListeTemps = [];
+    let maListeTemperature = [];
+    let maListeHumidite = [];
+
+    let maListeVolume = [];
+    let maListePuissance = [];
+    let maListeTds = [];
+    let maListePh = [];
+
+    {% for laData in listeDonnee %}
+
+        maListeTemps.push({{laData.temps}})
+        maListeTemperature.push({{laData.t}})
+        maListeHumidite.push({{laData.h}})
+
+        maListeVolume.push({{laData.v}})
+        maListePuissance.push({{laData.puissance}})
+        maListeTds.push({{laData.tds}})
+        maListePh.push({{laData.ph}})
+        
+    {% endfor %}
+
+    const te = document.getElementById('myChart');
+
+    new Chart(te, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [
+        {
+            label: 'temperature',
+            data: maListeTemperature,
+            borderWidth: 2,
+            yAxisID: 'y1',
+            animation: false,
+        },
+        {
+            label: 'humidite',
+            data: maListeHumidite,
+            borderWidth:1,
+            animation: false,
+            yAxisID: 'y2',
+        },
+
+        {
+            label: 'volume',
+            data: maListeVolume,
+            borderWidth:1,
+            animation: false,
+            yAxisID: 'y3',
+        },
+
+        {
+            label: 'puissance',
+            data: maListePuissance,
+            borderWidth:3,
+            animation: false,
+            yAxisID: 'y4',
+        },
+        {
+            label: 'TDS',
+            data: maListeTds,
+            borderWidth:1,
+            yAxisID: 'y5',
+        },        
+        {
+            label: 'PH',
+            data: maListePh,
+            borderWidth:1,
+            yAxisID: 'y6',
+        },
+
+
+        ]
+        
+        },
+        options: {
+            scales: {
+                y1: {
+                    beginAtZero: true
+                },
+                y2:{
+                    beginAtZero: true
+                },
+                y3: {
+                    beginAtZero: true
+                },
+                y4:{
+                    beginAtZero: true
+                },
+                y5: {
+                    beginAtZero: true
+                },
+                y6:{
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    
+</script> 
+
+
+
+
 
     {% else %}
         <p>Aucun fichier de données n'a été séléctionné pour le moment</p>

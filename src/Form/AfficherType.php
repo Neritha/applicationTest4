@@ -18,11 +18,16 @@ class AfficherType extends AbstractType
             ->add('fichier', EntityType::class,[
                 'class'=>Fichier::class,
                 'choice_label'=>'nomOriginal',
-                'label' => "Données à afficher",
+                'label' => false,
                 'attr'=>[
-                    'class'=>"selectStyles",]
+                    'class'=>"selectStyles m-2",]
             ])
-            ->add('OK', SubmitType::class, ['attr' => ['class'=> 'btn bg-primary text-white m-4' ], 'row_attr' => ['class' => 'text-center'],]);
+            ->add('submit', SubmitType::class, [
+                'attr' => [
+                    'class'=> 'btn bg-primary text-white m-2' ], 
+                'row_attr' => ['class' => 'text-center'],
+                'label'=> 'OK'
+            ]);
         ;
     }
 

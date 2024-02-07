@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Graphiques{% endblock %}
+
+{% block body %}
+<h1 class="m-3">Graphiques</h1>
+
+<div class="row">
+    <div class="col-6"><a href=" {{path('tableauDeBord')}} " class="btn btn-success">revenir en arrière</a></div>
+    <div class="col-6"><p>Graphiques des données du fichier : {{fichier.nomOriginal}} </p></div>
+</div>
+
+
+
+
+            <div>
+                <canvas id="myChart"></canvas>
+            </div>
+
+<script>
+
+    let maListeTemps = [];
+    let maListeTemperature = [];
+    let maListeHumidite = [];
+
+    let maListeVolume = [];
+    let maListePuissance = [];
+    let maListeTds = [];
+    let maListePh = [];
+
+    {% for laData in listeDonnee %}
+
+        maListeTemps.push({{laData.temps}})
+        maListeTemperature.push({{laData.t}})
+        maListeHumidite.push({{laData.h}})
+
+        maListeVolume.push({{laData.v}})
+        maListePuissance.push({{laData.puissance}})
+        maListeTds.push({{laData.tds}})
+        maListePh.push({{laData.ph}})
+        
+    {% endfor %}
+
+    const te = document.getElementById('myChart');
+
+    new Chart(te, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [
+        {
+            label: 'temperature',
+            data: maListeTemperature,
+            borderWidth: 2,
+            yAxisID: 'y1',
+            animation: false,
+        },
+        {
+            label: 'humidite',
+            data: maListeHumidite,
+            borderWidth:1,
+            animation: false,
+            yAxisID: 'y2',
+        },
+
+        {
+            label: 'volume',
+            data: maListeVolume,
+            borderWidth:1,
+            animation: false,
+            yAxisID: 'y3',
+        },
+
+        {
+            label: 'puissance',
+            data: maListePuissance,
+            borderWidth:3,
+            animation: false,
+            yAxisID: 'y4',
+        },
+        {
+            label: 'TDS',
+            data: maListeTds,
+            borderWidth:1,
+            yAxisID: 'y5',
+        },        
+        {
+            label: 'PH',
+            data: maListePh,
+            borderWidth:1,
+            yAxisID: 'y6',
+        },
+
+
+        ]
+        
+        },
+        options: {
+            scales: {
+                y1: {
+                    beginAtZero: true
+                },
+                y2:{
+                    beginAtZero: true
+                },
+                y3: {
+                    beginAtZero: true
+                },
+                y4:{
+                    beginAtZero: true
+                },
+                y5: {
+                    beginAtZero: true
+                },
+                y6:{
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    
+</script> 
+
+
+
+{% endblock %}
