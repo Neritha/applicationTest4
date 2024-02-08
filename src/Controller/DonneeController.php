@@ -76,15 +76,8 @@ class DonneeController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER');
         $fichier = $entityManager->getRepository(Fichier::class)->find($idF);
 
-        $donneesAffichees = [];
 
-        $dataAffiche = [];
-
-        for ($i = $fichier->getPremiereDonnee()->getId(); $i <= ($fichier->getPremiereDonnee()->getId())+($fichier->getNbLigne())-2; $i++){
-            $dataAffiche[] = $i;
-        }
-
-        $donneesAffichees = $repo->findBy(['id' => $dataAffiche]);
+        $donneesAffichees = $this->listeDonneeFichier($fichier, $repo);
 
         return $this->render('donnee/listeDonneesComplete.html.twig',[
             "listeDonnee" => $donneesAffichees,
@@ -100,15 +93,7 @@ class DonneeController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER');
         $fichier = $entityManager->getRepository(Fichier::class)->find($idF);
 
-        $donneesAffichees = [];
-
-        $dataAffiche = [];
-
-        for ($i = $fichier->getPremiereDonnee()->getId(); $i <= ($fichier->getPremiereDonnee()->getId())+($fichier->getNbLigne())-2; $i++){
-            $dataAffiche[] = $i;
-        }
-
-        $donneesAffichees = $repo->findBy(['id' => $dataAffiche]);
+        $donneesAffichees = $this->listeDonneeFichier($fichier, $repo);
 
         return $this->render('donnee/graphiques.html.twig',[
             "listeDonnee" => $donneesAffichees,
@@ -123,8 +108,21 @@ class DonneeController extends AbstractController
     public function statistiques(int $idF, DonneeRepository $repo, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
+
         $fichier = $entityManager->getRepository(Fichier::class)->find($idF);
 
+        $donneesAffichees = $this->listeDonneeFichier($fichier, $repo);
+
+        return $this->render('donnee/statistiques.html.twig',[
+            "listeDonnee" => $donneesAffichees,
+            "fichier" => $fichier
+        ]);
+    }
+
+
+    // cette fonction a pour but de renvoyer le tableau des donnée correspondant au fichier
+    public function listeDonneeFichier(Fichier $fichier, DonneeRepository $repo) : array
+    {
         $donneesAffichees = [];
 
         $dataAffiche = [];
@@ -135,10 +133,7 @@ class DonneeController extends AbstractController
 
         $donneesAffichees = $repo->findBy(['id' => $dataAffiche]);
 
-        return $this->render('donnee/statistiques.html.twig',[
-            "listeDonnee" => $donneesAffichees,
-            "fichier" => $fichier
-        ]);
+        return $donneesAffichees;
     }
 
 }

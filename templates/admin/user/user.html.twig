@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+    <h1 class="pt-2 text-center">Administraton des utilisateurs</h1>
+    
+    <div class="row pt-2">
+
+        <!--bouton pour ajouter une salle-->
+        {# <a href=" {{ path("admin_salle_ajout")}} " class="btn btn-success mx-auto m-3"><i class="fas fa-plus"></i> Ajouter une salle</a> #}
+
+        <table class="table table-hover border">
+            <thead>
+                <tr>
+                    <th scope="col-3">id</th>
+                    <th scope="col-3">email</th>
+                    <th scope="col-3">nom</th>
+                    <th scope="col-3">role(s)</th>
+                    <th scope="col-3">fichier(s) associé(s)</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for utilisateur in lesUtilisateurs %}
+
+                    <tr>
+                        <td class="col-3">{{utilisateur.id}}</td>
+                        <td class="col-3">{{utilisateur.email}}</td>
+                        <td class="col-3">{{utilisateur.nom}}</td>
+                        <td class="col-3">
+
+                        {% for role in utilisateur.roles %}
+                            {% if role == "ROLE_ADMIN" %}
+                                Administrateur
+                                {% else %}
+                                Utilisateur   
+                            {% endif %}
+                        {% endfor %}
+
+                        </td>
+
+                        <td class="col-3">
+                        
+                            <a href=" {{path('admin_user_fichiers')}} " class="btn btn-primary"><i class="fas fa-file-alt"></i></a>
+                        
+                        </td>
+
+
+
+                        {# <a href="{{path('admin_salle_modif', {'id': laSalle.id})}}" class="btn btn-primary"><i class="fa-regular fa-pen-to-square"></i></a> #}
+
+                        {# <a class="btn btn-danger" data-toggle="modal" data-target="#modalSimple" data-titre="Suppression d'une salle" data-message="Êtes vous sûr de vouloir supprimer la salle : {{laSalle.nom}}" data-libelleBouton="Supprimer" data-lien="{{path('admin_salle_supr', {'id': laSalle.id})}}"><i class="fa-regular fa-trash-can"></i></a> #}
+                        
+                        {# </td> #}
+
+                {% endfor %}
+
+
+
+            </tbody>
+        </table>
+        <div class="navigation mx-auto">
+            {{ knp_pagination_render(lesUtilisateurs) }}
+        </div>
+    </div>
+
+{% endblock %}

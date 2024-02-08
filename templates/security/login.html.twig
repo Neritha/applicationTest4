@@ -3,7 +3,7 @@
 {% block title %}Se connecter{% endblock %}
 
 {% block body %}
-<form method="post">
+{# <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
@@ -12,8 +12,8 @@
         <div class="mb-3">
             Vous êtes connecter en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
         </div>
-    {% endif %}
-
+    {% endif %} #}
+{# 
     <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
     <label for="inputEmail">Email</label>
     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
@@ -21,24 +21,51 @@
     <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
     <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+           value="{{ csrf_token('authenticate') }}">
 
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-    #}
     <br>
+    <p><a href=" {{path('app_forgot_password_request')}} ">Mot de passe oublié</a></p>
+        <button class="btn btn-lg btn-primary" type="submit">
+            Se connecter
+        </button>
+    </form> #}
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Se connecter
-    </button>
-</form>
-<p><a href=" {{path('app_forgot_password_request')}} ">Mot de passe oublié</a></p>
+<h1 class="pt-2 text-center">Connectez-vous</h1>
+
+    <div class="card border-secondary mx-auto" style="max-width: 30rem;">
+        <div class="card-header"><h4>Connexion</h4></div>
+        <div class="card-body">
+
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        Vous êtes connecter en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                    </div>
+                {% endif %}
+        
+                <label for="inputEmail">Email</label>
+
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                
+                <label for="inputPassword">Mot de passe</label>
+                
+                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+                <input type="hidden" name="_csrf_token"value="{{ csrf_token('authenticate') }}">
+
+                <br>
+                    
+                <p><a href=" {{path('app_forgot_password_request')}} ">Mot de passe oublié</a></p>
+                
+                <button class="btn btn-lg btn-primary" type="submit">
+                    Se connecter
+                </button>
+            </form>  
+        </div>
+    </div>
+
 {% endblock %}

@@ -5,9 +5,13 @@
 {% block body %}
 <h1 class="m-3">Statistiques</h1>
 
-<a href=" {{path('tableauDeBord')}} " class="btn btn-success">revenir en arrière</a>
+<div class="row">
+    <div class="col-6"><a onclick="history.go(-1)" class="btn btn-success">revenir en arrière</a></div>
+    <div class="col-6"> <p>Liste des données du fichier : {{fichier.nomOriginal}} </p></div>
+</div>
 
- <p>Liste des données du fichier : {{fichier.nomOriginal}} </p>
+
+<hr>
 
 <table class="table table-bordered border">
             <tbody>

@@ -6,12 +6,12 @@
 <h1 class="m-3">Graphiques</h1>
 
 <div class="row">
-    <div class="col-6"><a href=" {{path('tableauDeBord')}} " class="btn btn-success">revenir en arrière</a></div>
+    <div class="col-6"><div class="col-6"><a onclick="history.go(-1)" class="btn btn-success">revenir en arrière</a></div></div>
     <div class="col-6"><p>Graphiques des données du fichier : {{fichier.nomOriginal}} </p></div>
 </div>
+<hr>
 
-
-
+<a onclick="history.go(-1)">Retour</a>
 
             <div>
                 <canvas id="myChart"></canvas>

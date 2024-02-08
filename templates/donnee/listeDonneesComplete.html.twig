@@ -5,13 +5,13 @@
 {% block body %}
 <h1 class="m-3">Tableau des données</h1>
 
+<div class="row">
+    <div class="col-6"><a onclick="history.go(-1)" class="btn btn-success">revenir en arrière</a></div>
+    <div class="col-6"><p>Liste des données du fichier : {{fichier.nomOriginal}} </p></div>
+</div>
 
-
-<a href=" {{path('tableauDeBord')}} " class="btn btn-success">revenir en arrière</a>
-<p>Liste des données du fichier : {{fichier.nomOriginal}} </p>
-
-
-            <table class="table table-hover">
+<hr>
+            <table class="table table-hover border">
                 <thead>
                     <tr>
                         <th scope="col-2">Temps</th>

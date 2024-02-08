@@ -8,6 +8,7 @@ use App\Entity\Fichier;
 use App\Form\AjoutFichierType;
 use App\Repository\FichierRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -20,7 +21,7 @@ class FichierController extends AbstractController
     /**
      * @Route("/ajoutFichier", name="ajoutFichier")
      */
-    public function ajoutFichier(Request $request, EntityManagerInterface $entityManagerInterface): Response
+    public function ajoutFichier(Request $request, EntityManagerInterface $entityManagerInterface, PaginatorInterface $paginator, FichierRepository $repo): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -72,9 +73,17 @@ class FichierController extends AbstractController
                 }
                 return $this->redirectToRoute('ajoutFichier');
             }
-        }        
+        }     
+        
+        $fichiers = $paginator->paginate(
+            $repo->listeFichierComplete(),
+            $request->query->getInt('page', 1), 
+            10
+        );
+
      return $this->render('fichier/ajoutFichier.html.twig', [
-            'form'=> $form->createView()
+            'form'=> $form->createView(),
+            'lesFichiers'=>$fichiers
         ]);
     }
 

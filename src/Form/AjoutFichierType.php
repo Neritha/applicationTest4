@@ -13,9 +13,15 @@ class AjoutFichierType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('fichier', FileType::class, array('label' => 'Fichier à télécharger'))
-            ->add('envoyer', SubmitType::class, ['attr' => ['class'=> 'btn bg-primary text-white m-4' ], 'row_attr' => ['class' => 'text-center'],]);
+            ->add('fichier', FileType::class, array('label' => false))
+            // ->add('submit', SubmitType::class, ['attr' => ['class'=> 'btn bg-primary text-white m-4' ], 'row_attr' => ['class' => 'text-center'],]);
         //;
+            ->add('submit', SubmitType::class, [
+                'attr' => [
+                    'class'=> 'btn bg-primary text-white m-2' ], 
+                'row_attr' => ['class' => 'text-center'],
+                'label'=> 'Envoyer'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

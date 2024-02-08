@@ -3,10 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Fichier;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Fichier>
@@ -75,4 +76,11 @@ class FichierRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function listeFichierComplete () : ?Query
+    {
+        return $this->createQueryBuilder('f')
+            ->select('f')
+            ->getQuery(); 
+    }
 }
