@@ -76,11 +76,17 @@ class DonneeRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function listeDonneeCompleteAdmin ($id, $nbL) : ?Query
+    public function listeDonneesComplete ($id1, $id2) : ?Query
     {
         return $this->createQueryBuilder('d')
             ->select('d')
-            //->andWhere('d.id' = )
-            ->getQuery(); 
+            ->setParameter('minId', $id1)
+            ->setParameter('maxId', $id2)
+            ->where('d.id BETWEEN :minId AND :maxId')
+
+
+            ->getQuery();
     }
+
+
 }

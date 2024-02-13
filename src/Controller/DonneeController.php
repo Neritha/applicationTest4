@@ -71,19 +71,71 @@ class DonneeController extends AbstractController
     /**
      * @Route("/tableauDeBord/listeDonneesComplete/{idF}", name="listeDonneesComplete", methods={"GET"})
      */
-    public function listeDonneesComplete(int $idF, DonneeRepository $repo, EntityManagerInterface $entityManager): Response
+    public function listeDonneesCompleteC(int $idF, DonneeRepository $repo, EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $fichier = $entityManager->getRepository(Fichier::class)->find($idF);
 
+        //$id1 = $fichier->getId();
+        $id1 = $fichier->getPremiereDonnee()->getId();
+        $nbL = $fichier->getNbLigne();
+        $id2 = ($id1+$nbL)-2;
 
-        $donneesAffichees = $this->listeDonneeFichier($fichier, $repo);
+        // $donneesAffichees = $this->listeDonneeFichier($fichier, $repo);
+
+        $donneesAffichees = $paginator->paginate(
+            $repo->listeDonneesComplete($id1, $id2),
+            $request->query->getInt('page', 1), 
+            10
+        );
 
         return $this->render('donnee/listeDonneesComplete.html.twig',[
             "listeDonnee" => $donneesAffichees,
-            "fichier" => $fichier
+            "fichier" => $fichier,
+
+            // "id" => $id1,
+            // "nbl" => $id2
         ]);
     }
+
+
+
+    //     /**
+    //  * @Route("/tableauDeBord/listeDonneesComplete/{idF}", name="listeDonneesComplete", methods={"GET"})
+    //  */
+    // public function listeDonneesComplete(int $idF, DonneeRepository $repo, EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
+    // {
+    //     $this->denyAccessUnlessGranted('ROLE_USER');
+
+    //     // Récupération du fichier
+    //     $fichier = $entityManager->getRepository(Fichier::class)->find($idF);
+
+    //     // Vérification de l'existence du fichier
+    //     if (!$fichier) {
+    //         throw $this->createNotFoundException('Fichier non trouvé');
+    //     }
+
+    //     // Récupération des données pour le fichier spécifié
+    //     $donnees = $repo->findBy(['fichier' => $fichier]);
+
+    //     // Pagination des données
+    //     $donneesPaginees = $paginator->paginate(
+    //         $donnees,
+    //         $request->query->getInt('page', 1), 
+    //         10
+    //     );
+
+    //     return $this->render('donnee/listeDonneesComplete.html.twig', [
+    //         'listeDonnee' => $donneesPaginees,
+    //         'fichier' => $fichier,
+    //     ]);
+    // }
+
+
+
+
+
+
 
      /**
      * @Route("/tableauDeBord/graphiques/{idF}", name="graphiques", methods={"GET"})
@@ -135,5 +187,6 @@ class DonneeController extends AbstractController
 
         return $donneesAffichees;
     }
+    
 
 }

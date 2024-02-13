@@ -29,6 +29,7 @@
                 <tr>
                     <th scope="col">Nom</th>
                     <th scope="col">Date</th>
+                    <th scope="col">Heure</th>
                     <th scope="col">Extension</th>
                     <th scope="col">Taille</th>
                     <th scope="col">Actions</th>
@@ -41,7 +42,8 @@
 
                     <tr>
                         <td>{{f.nomOriginal}}</td>
-                        <td>{{f.dateEnvoi | date("d-m-Y à H:i:s") }}</td>
+                        <td>{{f.dateEnvoi | date("d-m-Y") }}</td>
+                        <td>{{f.dateEnvoi | date("H:i") }}</td>
                         <td>{{f.extension}}</td>
 
                         {% set ko = f.taille / 1000 %}

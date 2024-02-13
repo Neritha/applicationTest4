@@ -7,10 +7,13 @@
 
 <div class="row">
     <div class="col-6"><a onclick="history.go(-1)" class="btn btn-success">revenir en arrière</a></div>
+    {# <a onclick="goBackToTableauDeBord()" class="btn btn-success">Revenir en arrière</a> #}
     <div class="col-6"><p>Liste des données du fichier : {{fichier.nomOriginal}} </p></div>
 </div>
 
 <hr>
+
+{# {{ dump(listeDonnee) }} #}
             <table class="table table-hover border">
                 <thead>
                     <tr>
@@ -46,6 +49,32 @@
                 {% endfor %}
                 </tbody>
             </table>
+
+        <div class="navigation mx-auto">
+            {{ knp_pagination_render(listeDonnee) }}
+        </div>
+
+{# 
+        {{ dump(id) }}
+        {{ dump(nbl) }}
+
+        {{ dump(listeDonnee) }} #}
+
+{# <script>
+    function goBackToTableauDeBord() {
+        // Récupérer l'URL actuelle
+        var currentUrl = window.location.href;
+        
+        // Trouver l'index de la première occurrence de "/tableauDeBord"
+        var index = currentUrl.indexOf("/tableauDeBord");
+        
+        // Extraire la partie de l'URL jusqu'à "/tableauDeBord"
+        var tableauDeBordUrl = currentUrl.substring(0, index + "/tableauDeBord".length);
+        
+        // Rediriger vers l'URL de "/tableauDeBord"
+        window.location.href = tableauDeBordUrl;
+    }
+</script> #}
 
 
 {% endblock %}

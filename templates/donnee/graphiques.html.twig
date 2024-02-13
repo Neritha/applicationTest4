@@ -10,14 +10,33 @@
     <div class="col-6"><p>Graphiques des données du fichier : {{fichier.nomOriginal}} </p></div>
 </div>
 <hr>
+{# 
+<div>
+    <canvas id="myChart"></canvas>
+</div> #}
 
-<a onclick="history.go(-1)">Retour</a>
+<div class="row">
+    <div class="col-6"><canvas id="myChartHumidite"></canvas></div>
+    <div class="col-6"><canvas id="myChartTemperature"></canvas></div>
+</div>
+<div class="row">
+    <div class="col-6"><canvas id="myChartVolume"></canvas></div>
+    <div class="col-6"><canvas id="myChartTds"></canvas></div>
+</div>
+<div class="row">
+    <div class="col-6"><canvas id="myChartPh"></canvas></div>
+    <div class="col-6"><canvas id="myChartPuissance"></canvas></div>
+</div>
+<div class="row">
+    <div class="col-6"><canvas id="myChartPgf"></canvas></div>
+    <div class="col-6"><canvas id="myChartPr"></canvas></div>
+</div>
+<div class="row">
+    <div class="col-6"><canvas id="myChartVfe"></canvas></div>
+    <div class="col-6"><canvas id="myChartVnc"></canvas></div>
+</div>
 
-            <div>
-                <canvas id="myChart"></canvas>
-            </div>
-
-<script>
+ <script>
 
     let maListeTemps = [];
     let maListeTemperature = [];
@@ -27,6 +46,12 @@
     let maListePuissance = [];
     let maListeTds = [];
     let maListePh = [];
+
+    let maListePgf = [];
+    let maListePr = [];
+    let maListeVfe = [];
+    let maListeVnc = [];
+
 
     {% for laData in listeDonnee %}
 
@@ -38,10 +63,23 @@
         maListePuissance.push({{laData.puissance}})
         maListeTds.push({{laData.tds}})
         maListePh.push({{laData.ph}})
+
+        maListePgf.push({{laData.pgf}})
+        maListePr.push({{laData.pr}})
+        maListeVfe.push({{laData.vfe}})
+        maListeVnc.push({{laData.vnc}})
+
         
     {% endfor %}
 
-    const te = document.getElementById('myChart');
+    {# [nomChart, nomLabel, nomListeDonnées] #}
+
+    {# let arrayTemperature = ["chartTemperature", "Temperature", maListeTemperature];
+    let arrayHumidite = ["chartHumidite", "Humidite", maListeHumidite]; #}
+
+    
+
+    {# const te = document.getElementById('myChart');
 
     new Chart(te, {
         type: 'line',
@@ -118,12 +156,247 @@
                 }
             }
         }
+    }); #}
+
+    {# const te = document.getElementById('myChartTemperature');
+
+    new Chart(te, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [{
+            label: 'temperature',
+            data: maListeTemperature,
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    }); #}
+
+    const hu = document.getElementById('myChartHumidite');
+        new Chart(hu, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [{
+            label: 'Humidite',
+            data: maListeHumidite,
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
     });
 
-
+    const te = document.getElementById('myChartTemperature');
+        new Chart(te, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [{
+            label: 'Temperature',
+            data: maListeTemperature,
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    });    
     
-</script> 
+   
 
+    const vo = document.getElementById('myChartVolume');
+        new Chart(vo, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [{
+            label: 'Volume',
+            data: maListeVolume,
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    });    
+
+
+    const td = document.getElementById('myChartTds');
+        new Chart(td, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [{
+            label: 'Tds',
+            data: maListeTds,
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    }); 
+
+    const ph = document.getElementById('myChartPh');
+        new Chart(ph, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [{
+            label: 'pH',
+            data: maListePh,
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    }); 
+    
+    const pu = document.getElementById('myChartPuissance');
+        new Chart(pu, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [{
+            label: 'Puissance',
+            data: maListePuissance,
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    }); 
+
+    const pg = document.getElementById('myChartPgf');
+        new Chart(pg, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [{
+            label: 'Pgf',
+            data: maListePgf,
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    }); 
+
+
+    const pr = document.getElementById('myChartPr');
+        new Chart(pr, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [{
+            label: 'Pr',
+            data: maListePr,
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    }); 
+
+
+    const vf = document.getElementById('myChartVfe');
+        new Chart(vf, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [{
+            label: 'Vfe',
+            data: maListeVfe,
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    }); 
+
+
+    const vn = document.getElementById('myChartVnc');
+        new Chart(vn, {
+        type: 'line',
+        data: {
+        labels: maListeTemps,
+                    
+        datasets: [{
+            label: 'Vnc',
+            data: maListeVnc,
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    }); 
+
+</script> 
 
 
 {% endblock %}

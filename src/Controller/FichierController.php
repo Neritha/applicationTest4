@@ -78,7 +78,7 @@ class FichierController extends AbstractController
         $fichiers = $paginator->paginate(
             $repo->listeFichierComplete(),
             $request->query->getInt('page', 1), 
-            10
+            7
         );
 
      return $this->render('fichier/ajoutFichier.html.twig', [
