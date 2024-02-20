@@ -17,10 +17,6 @@ class Donnee
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $temps;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -70,24 +66,21 @@ class Donnee
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $puissance; //vnc ( Valeur binaire concernant l’alerte sur le niveau critique d’eau)
+    private $puissance;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date; //vnc ( Valeur binaire concernant l’alerte sur le niveau critique d’eau)
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTemps(): ?float
-    {
-        return $this->temps;
-    }
+    
 
-    public function setTemps(float $temps): self
-    {
-        $this->temps = $temps;
-
-        return $this;
-    }
+    
 
     public function getT(): ?float
     {
@@ -205,6 +198,18 @@ class Donnee
     public function setPuissance(?float $puissance): self
     {
         $this->puissance = $puissance;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

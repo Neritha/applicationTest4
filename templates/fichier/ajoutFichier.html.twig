@@ -5,6 +5,23 @@
 {% block body %}
 
 <h1 class="m-3">Ajouter un fichier</h1>
+
+<p>la progression en est à  </p>
+
+{# {% if progress %}
+    <div>
+        <p>Progression : {{ progress }}%</p>
+        <div style="width: {{ progress }}%; background-color: #4CAF50; height: 20px;"></div>
+    </div>
+{% endif %} #}
+
+    {# <div>
+        <p>Progression : 25%</p>
+        <div style="width: 25%; background-color: #4CAF50; height: 20px;"></div>
+    </div> #}
+
+
+
     {# <div>
         {{form(form)}}
     </div> #}
@@ -32,6 +49,7 @@
                     <th scope="col">Heure</th>
                     <th scope="col">Extension</th>
                     <th scope="col">Taille</th>
+                    <th scope="col">Nb lignes</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -42,12 +60,14 @@
 
                     <tr>
                         <td>{{f.nomOriginal}}</td>
-                        <td>{{f.dateEnvoi | date("d-m-Y") }}</td>
+                        <td>{{f.dateEnvoi | date("d-m-Y à H:i:s") }}</td>
                         <td>{{f.dateEnvoi | date("H:i") }}</td>
                         <td>{{f.extension}}</td>
 
                         {% set ko = f.taille / 1000 %}
                         <td>{{ko}}ko</td>
+
+                        <td> {{f.nbLigne}} </td>
 
                         <td>
                             <a href="{{path('fichierContenu', {'id': f.id})}}" class="btn btn-primary ml-2 mr-2" title="afficher le contenu du fichier"><i class="fas fa-search"></i></a>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Data;
 use App\Entity\Donnee;
 use App\Entity\Fichier;
@@ -13,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use phpDocumentor\Reflection\PseudoTypes\StringValue;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -21,9 +24,12 @@ class FichierController extends AbstractController
     /**
      * @Route("/ajoutFichier", name="ajoutFichier")
      */
-    public function ajoutFichier(Request $request, EntityManagerInterface $entityManagerInterface, PaginatorInterface $paginator, FichierRepository $repo): Response
+    public function ajoutFichier(Request $request, EntityManagerInterface $entityManagerInterface, PaginatorInterface $paginator, FichierRepository $repo, SessionInterface $session): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
+
+        // $session->set('progress', 0);
+        $progress = 0;
 
         $form = $this->createForm(AjoutFichierType::class);
         if($request->isMethod('POST')){
@@ -83,7 +89,8 @@ class FichierController extends AbstractController
 
      return $this->render('fichier/ajoutFichier.html.twig', [
             'form'=> $form->createView(),
-            'lesFichiers'=>$fichiers
+            'lesFichiers'=>$fichiers,
+            'progress' => $progress
         ]);
     }
 
@@ -174,11 +181,16 @@ class FichierController extends AbstractController
     }
 
     /**
-     *@Route("/ajoutDonnee/{id}", name="ajoutDonnee", methods={"GET","POST"})
+     *@Route("/ajoutFichier/ajoutDonnee/{id}", name="ajoutDonnee", methods={"GET","POST"})
      */
-    public function addData (int $id, FichierRepository $repo, Donnee $data = null, Request $request, EntityManagerInterface $manager)
+    public function addData (int $id, FichierRepository $repo, Donnee $data = null, Request $request, EntityManagerInterface $manager, SessionInterface $session)
     {
+        // $progress = 0;
+        $compt = 0;
+
         $fichier = $repo->find($id);
+
+        // $session->set('progress', 0); ////////////
 
         $fileDirectory = $this->getParameter('file_directory'); // recuperer le nom du nom_serveur
         $filePath = $fileDirectory . '/' . $fichier->getNomServeur();  // recuperer le chemin du fichier grêce au nom sur le serveur
@@ -193,17 +205,29 @@ class FichierController extends AbstractController
             // Création d'une nouvelle entité Data pour chaque ligne du fichier CSV
             $data = new Donnee();
 
-            $data->setTemps(floatval($value[0]));  // [les colonnes]
+            $dateStr = strval($value[0]);
+            $date = DateTime::createFromFormat("Y-m-d H:i:s", $dateStr);
+
+            if ($date != false) {
+                // La conversion de la date est réussie, affectez la date à l'entité Donnee
+                $data->setDate($date);
+            } else {
+                // Gérer l'erreur si la conversion de la date échoue
+                // Par exemple, enregistrer un journal d'événements ou ignorer cette ligne de données
+                echo "Erreur lors de la conversion de la date pour la valeur : $dateStr  qui a pour type " . gettype($dateStr);
+            }
+
+            $data->setDate($date);
             $data->setT(floatval($value[1]));
             $data->setH(floatval($value[2])) ;
-            $data->setV(floatval($value[3]));
+            $data->setV(floatval(0));
             $data->setPuissance(floatval($value[4]));
             $data->setTds(intval($value[5]));
             $data->setPh(floatval($value[6]));
             $data->setPgf(floatval($value[7]));
-            $data->setPr(floatval($value[8]));
-            $data->setVfe(floatval($value[9]));
-            $data->setVnc(floatval($value[10]));
+            $data->setPr(floatval($value[3]));
+            $data->setVfe(floatval($value[8]));
+            $data->setVnc(floatval(0));
 
             $manager->persist($data);
 
@@ -213,15 +237,39 @@ class FichierController extends AbstractController
             }
             
             $premiereLigne = false;
+
+            //$this->updateProgress($session, 10); // Par exemple, 10% de progression à chaque itération
+
+            // $session->set('progress', 10);
+
+            // $progress++;
+            $compt++;
+
+            if ($compt == 30){
+                $manager->flush();
+                $compt = 0;
+            }
+
+            // $this->progressBar($progress);
         }
 
-        $manager->flush();
+        if ($compt != 0){
+            $manager->flush();
+        }
+
+        
 
         // ajouter le rang de la première donnée à la table des fichiers (cela pourra aussi servir d'indicateur si le fichier est dans le base ou non (griser le boutton correspondant en fonction ("ajouter à la base")))
     
         $this->addFlash("success", "Les données ont été ajouté !");
 
         return $this->redirectToRoute('ajoutFichier');
+    }
+
+    public function progressBar (int $i){
+        return $this->render('fichier/ajoutFichier.html.twig', [
+            'progress'=>$i
+        ]);
     }
 }
     

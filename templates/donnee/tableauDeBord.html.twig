@@ -46,7 +46,8 @@
 
                 {% for laDonnee in listeDonnee|slice(0, 10) %}
                     <tr>
-                        <td> {{laDonnee.temps}} </td>
+                        {# <td> {{laDonnee.temps}} </td> #}
+                        <td> {{laDonnee.date | date("Y-m-d H:i:s")}} </td>
                         <td> {{laDonnee.t}} </td>
                         <td> {{laDonnee.h}} </td>
                         <td> {{laDonnee.v}} </td>
@@ -63,7 +64,7 @@
             </table>
         </div>
 
-        <div class="col-6 d-flex justify-content-center align-items-center">
+        <div class="col-6 d-flex justify-content-end align-items-center">
             <a href=" {{path('listeDonneesComplete',{idF : idF})}} " class="btn btn-success">Afficher la liste complète</a>
         </div>
     </div>
@@ -149,7 +150,7 @@
 
      <script>
 
-    let maListeTemps = [];
+    let maListeTemps = []; //["chocolat","pistache","mango","banana","5:5",6,7,8,9];
     let maListeTemperature = [];
     let maListeHumidite = [];
 
@@ -160,7 +161,24 @@
 
     {% for laData in listeDonnee %}
 
-        maListeTemps.push({{laData.temps}})
+        {# let H = {{laData.date | date("H") }} #}
+        {# let i = {{laData.date | date("i") }} #}
+
+        {# let Hi = H+i #}
+
+        {# {% set H = laData.date | date("H") %}
+        {% set i = laData.date | date("i") %}
+
+        {% set Hi = H %}
+
+
+        maListeTemps.push({{Hi}})
+
+        {{ dump(Hi) }} #}
+
+        {# {{ dump(laData.date | date("H") ~ "hey")}} #}
+
+        maListeTemps.push({{laData.date | date("i")}})
         maListeTemperature.push({{laData.t}})
         maListeHumidite.push({{laData.h}})
 
@@ -169,7 +187,10 @@
         maListeTds.push({{laData.tds}})
         maListePh.push({{laData.ph}})
         
+        {# {{ dump(laData.date | date("H:i")) }} #}
     {% endfor %}
+
+
 
     const te = document.getElementById('myChart');
 
